@@ -7,7 +7,6 @@ Install & Setting
 -----------------
 
 Place `.workon` file to your work-directory. You must define `workonfunc` and `workonresetfunc` to `.workon` file.
-
 Load `workon.sh` in `.bashrc`.
 
 .workon example:
@@ -21,7 +20,6 @@ Load `workon.sh` in `.bashrc`.
     }
 
 This example shows setting up Python virtualenv.
-
 `workonresetfunc` is executed when you go out from work-directory.
 
 Example
