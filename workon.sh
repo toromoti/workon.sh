@@ -1,4 +1,3 @@
-
 WORKON_CONFIG_FILE=".workon"
 WORKON_RESET_FUNC="workonresetfunc"
 WORKON_FUNC="workonfunc"
