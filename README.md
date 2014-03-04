@@ -19,7 +19,7 @@ Load `workon.sh` in `.bashrc`.
       deactivate
     }
 
-This example shows setting up Python virtualenv.
+This example shows setting up Python virtualenv. That's right, `.workon` file is a shell-script that defines the function, simply.
 `workonresetfunc` is executed when you go out from work-directory.
 
 Example
