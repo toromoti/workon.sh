@@ -7,8 +7,8 @@ Install & Setting
 -----------------
 
 Place `.workon` file to your work-directory. You must define `workonfunc` and `workonresetfunc` to `.workon` file.
+
 Load `workon.sh` in `.bashrc`.
-Setup `workon_workon` function to `PROMPT_COMMAND`.
 
 .workon example:
 
@@ -21,6 +21,7 @@ Setup `workon_workon` function to `PROMPT_COMMAND`.
     }
 
 This example shows setting up Python virtualenv.
+
 `workonresetfunc` is executed when you go out from work-directory.
 
 Example
