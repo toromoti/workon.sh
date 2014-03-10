@@ -3,6 +3,11 @@ workon.sh
 
 Execute specified commands when you move to work-directory
 
+Sorry
+-----
+
+I wrote this in Jenglish.
+
 Install & Setting
 -----------------
 
