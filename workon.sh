@@ -1,6 +1,6 @@
 WORKON_CONFIG_FILE=".workon"
-WORKON_RESET_FUNC="workonresetfunc"
-WORKON_FUNC="workonfunc"
+WORKON_RESET_FUNC="workon_resetfunc"
+WORKON_FUNC="workon_func"
 
 function workon_reset {
   if [ $WORKON_CONFIG_FILE_CACHE ]
@@ -10,10 +10,14 @@ function workon_reset {
       # すでにCONFIGが設定されていて、かつ、存在している場合は
       # そのCONFIGを読み込み、resetfuncを実行する。
       . $WORKON_CONFIG_FILE_CACHE
+      type $WORKON_RESET_FUNC > /dev/null || return 1
       $WORKON_RESET_FUNC
       # 新しいCONFIGを登録するために
       # 現在のCONFIGの設定は削除する
       unset WORKON_CONFIG_FILE_CACHE
+      # 関数を削除
+      unset -f $WORKON_FUNC
+      unset -f $WORKON_RESET_FUNC
     fi
   fi
 }
@@ -21,7 +25,7 @@ function workon_reset {
 function workon_workon {
   # ディレクトリが同じならすぐreturn（cdしてないということ）
   local current_dir=`pwd`
-  [ "$current_dir" = "$WORKON_DIR_CACHE" ] && return
+  [ "$current_dir" = "$WORKON_DIR_CACHE" ] && return 0
 
   # 現在のディレクトリを記憶
   export WORKON_DIR_CACHE=$current_dir
@@ -43,13 +47,15 @@ function workon_workon {
   if [ $found_config_file ]
   then
     # CONFIGがすでに記憶しているやつと一緒ならすぐreturn
-    [ "$found_config_file" = "$WORKON_CONFIG_FILE_CACHE" ] && return
+    [ "$found_config_file" = "$WORKON_CONFIG_FILE_CACHE" ] && return 0
 
     # Call reset-function
     workon_reset
 
     # Load new-config, and Call setting-function
-    . $found_config_file && $WORKON_FUNC
+    . $found_config_file
+    type $WORKON_FUNC > /dev/null || return 1
+    $WORKON_FUNC
 
     # Save current CONFIG
     export WORKON_CONFIG_FILE_CACHE=$found_config_file

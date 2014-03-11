@@ -17,11 +17,11 @@ And set to `COMMAND_PROMPT` the exec of `workon_workon` function.
 
 `.workon` example:
 
-    function workonfunc {
+    function workon_func {
       workon hatebui
     }
 
-    function workonresetfunc {
+    function workon_resetfunc {
       deactivate
     }
 
