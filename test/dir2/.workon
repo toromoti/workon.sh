@@ -1,0 +1,7 @@
+workon_func() {
+  echo "in dir2"
+}
+
+workon_resetfunc() {
+  echo "out dir2"
+}

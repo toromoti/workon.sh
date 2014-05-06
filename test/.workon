@@ -1,0 +1,7 @@
+workon_func() {
+  echo "in root"
+}
+
+workon_resetfunc() {
+  echo "out root"
+}
