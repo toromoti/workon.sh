@@ -2,7 +2,7 @@ WORKON_CONFIG_FILE=".workon"
 WORKON_RESET_FUNC="workon_resetfunc"
 WORKON_FUNC="workon_func"
 
-function workon_reset {
+workon_reset() {
   if [ $WORKON_CONFIG_FILE_PATH_CACHE ]
   then
     if [ -e $WORKON_CONFIG_FILE_PATH_CACHE ]
@@ -22,7 +22,23 @@ function workon_reset {
   fi
 }
 
-function workon_workon {
+_workon_search() {
+  local search_target_path=$1
+  local search_target_file=$2
+  until [ -z $search_target_path ]
+  do
+    if [ "`\ls -a $search_target_path | \grep $search_target_file`" = "$search_target_file" ]
+    then
+      echo "$search_target_path/$search_target_file"
+      return
+    fi
+    # Cut a tail of given full-path
+    # give:"/dir1/dir2/dir3/dir4" --> take:"/dir1/dir2/dir3"
+    search_target_path=`echo $search_target_path | sed -e "s/\/[^\/]*$//g"`
+  done
+}
+
+workon_workon() {
   # ディレクトリが同じならすぐreturn（cdしてないということ）
   local pwd_path=`pwd`
   [ "$pwd_path" = "$WORKON_DIR_CACHE" ] && return 0
@@ -30,19 +46,7 @@ function workon_workon {
   # 現在のディレクトリを記憶
   export WORKON_DIR_CACHE=$pwd_path
 
-  local search_target_path=$pwd_path
-  until [ -z $search_target_path ]
-  do
-    if [ "`\ls -a $search_target_path | \grep $WORKON_CONFIG_FILE`" = "$WORKON_CONFIG_FILE" ]
-    then
-      # CONFIGが見つかったら記憶
-      local found_config_file_path=$search_target_path/$WORKON_CONFIG_FILE
-      break
-    fi
-    # Cut a tail of given full-path
-    # give:"/dir1/dir2/dir3/dir4" --> take:"/dir1/dir2/dir3"
-    search_target_path=`echo $search_target_path | sed -e "s/\/[^\/]*$//g"`
-  done
+  local found_config_file_path=`_workon_search $pwd_path $WORKON_CONFIG_FILE`
 
   if [ $found_config_file_path ]
   then
